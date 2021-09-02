@@ -10,9 +10,9 @@ class Data():
         print("not done yet")
     def getInfo(self):
         return self.info
-    def getRows(self): # total # how many tall
+    def getRows(self): # how many tall
         return len(self.info)
-    def getColumns(self): # rows # how many on wide
+    def getColumns(self): # how many on wide
         return len(self.info[0])
     def getValueAt(self, rowNum, colNum):
         return self.info[rowNum][colNum]
@@ -95,11 +95,11 @@ def main():
     ]
     data = Data(info)
     ai.setData(data)
-    ai.learn(1000)
+    ai.learn(999999)
     ai.printBestWeights()
 
-    row = [1, 0, 1, 0, 0]
-    print("")
-    ai.predictRow(row)
+    # row = [1, 0, 1, 0, 0]
+    # print("")
+    # ai.predictRow(row)
 
 main()
