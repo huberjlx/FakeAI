@@ -61,14 +61,21 @@ class AI():
             self.VeryBestValueDifAvg = bestValueDifAvg
             self.VeryBestWeights = bestWeights
 
-        print("\n\n\ntests finished!")
-        # for colNum in range(self.data.getColumns() - 1):
-        #     print("%f " % self.VeryBestWeights[colNum], end="") 
+        print("\n\n\nlearning finished!")
+
+    def predictRow(self, row):
+        sum = 0
+        for colNum in range(self.data.getColumns() - 1):
+            sum = sum + self.VeryBestWeights[colNum] * row[colNum]
+        value = round(sum)
+        print("Sum: %f" % sum)
+        print("Value: %i" % value)
+        return value
             
     def printBestWeights(self):
-        print("Best dif: %f with weights:" % self.VeryBestValueDifAvg)
+        print("Best dif: %.3f with weights:" % self.VeryBestValueDifAvg)
         for colNum in range(self.data.getColumns() - 1):
-            print("%f" % self.VeryBestWeights[colNum]) 
+            print("%.2f" % self.VeryBestWeights[colNum]) 
     def setData(self, data):
         self.data = data
     def getData(self):
@@ -79,16 +86,20 @@ def main():
 
     ai = AI()
     info = [
-        [1, 0, 1, 1],
-        [1, 0, 0, 1],
-        [0, 1, 1, 0],
-        [1, 1, 0, 1],
-        [0, 1, 0, 0],
-        [0, 0, 1, 0]
+        [1, 0, 1, 1, 1],
+        [1, 0, 0, 1, 1],
+        [0, 1, 1, 0, 0],
+        [1, 1, 0, 0, 1],
+        [0, 1, 0, 1, 0],
+        [0, 0, 1, 1, 0]
     ]
     data = Data(info)
     ai.setData(data)
-    ai.learn(100)
+    ai.learn(1000)
     ai.printBestWeights()
+
+    row = [1, 0, 1, 0, 0]
+    print("")
+    ai.predictRow(row)
 
 main()
