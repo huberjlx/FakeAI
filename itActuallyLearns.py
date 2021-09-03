@@ -1,8 +1,6 @@
 import random
 import math
-import numpy as np
-# https://realpython.com/python-ai-neural-network/
-#https://pub.towardsai.net/building-neural-networks-from-scratch-with-python-code-and-math-in-detail-i-536fae5d7bbf#478a
+# import numpy as np
 
 class Data():
 
@@ -23,30 +21,27 @@ class Data():
         return self.info[rowNum][len(self.info[rowNum]) - 1]
 
 
-
-
 class AI():
 
     def __init__(self):
+        self.learningRate = 0.05
         self.data = []
         self.weights = []
-        self.error = 1.0
+        self.error = -1.0
 
     def learn(self, numberOfTests):
 
         weights = self.weights
         dif = 1000
-            # print(" %f" % weight, end="")
         print("")
 
         for cycle in range(numberOfTests):
             print("\n\nCycle: %i" % cycle)
-            # totalDerivative = 0
-            totalDif = 0.0
+            totalError = 0.0
             for colNum in range(self.data.getColumns() - 1):
                 print(" %.2f" % weights[colNum])
             for rowNum in range(self.data.getRows()):
-                print("")
+                # print("")
                 sum = 0.0
                 for colNum in range(self.data.getColumns() - 1):
                     sum = sum + weights[colNum] * self.data.getValueAt(rowNum, colNum)
@@ -55,50 +50,46 @@ class AI():
                 except:
                     sum = -(math.sqrt(-sum))
                 dif = sum - self.data.getResultForRow(rowNum)
-                totalDif = totalDif + dif
+                error = (1/2) * (dif **2)
+                totalError = totalError + error
 
-
-                print("Sum: %.3f" % sum)
-                print("Target: %i" % self.data.getResultForRow(rowNum))
-                print("Dif: %.3f" % dif)
-
-            avgDif = totalDif / (self.data.getColumns() - 1)
-            for rowNum in range(self.data.getRows()):
                 for colNum in range(self.data.getColumns() - 1):
-                    weights[colNum] = weights[colNum] - (avgDif * self.data.getValueAt(rowNum, colNum))
+                    weights[colNum] = weights[colNum] - self.learningRate * (dif * self.data.getValueAt(rowNum, colNum))
 
+                # print("Sum: %.3f" % sum)
+                # print("Target: %i" % self.data.getResultForRow(rowNum))
+                # print("Dif: %.3f" % dif)
 
+            avgError = totalError / (self.data.getColumns() - 1)
+            print("\nAverage Error: %.3f" % avgError)
 
         self.weights = weights
-        # self.error = error
+        self.error = avgError
 
-
-        print("\n\n\nlearning finished!")
+        print("\n\n\nLearning Finished!")
 
     def sigmoid(self, x):
         print(1 / (1 + math.exp(-x)))
         return 1 / (1 + math.exp(-x))
 
     def updateWeights(self, weights, derivative):
-        # sum = 0.0
-        # for colNum in range(self.data.getColumns() - 1):
-        #     sum = sum + weights[colNum]
-        # for colNum in range(self.data.getColumns() - 1):
-        #     weights[colNum] = weights[colNum] - (derivative * (weights[colNum]/sum))
-        # return weights
-
-        npWeights = np.array(weights)
-        npWeights = npWeights - derivative
-        weights = npWeights.tolist()
+        sum = 0.0
+        for colNum in range(self.data.getColumns() - 1):
+            sum = sum + weights[colNum]
+        for colNum in range(self.data.getColumns() - 1):
+            weights[colNum] = weights[colNum] - (derivative * (weights[colNum]/sum))
         return weights
 
-
+        # npWeights = np.array(weights)
+        # npWeights = npWeights - derivative
+        # weights = npWeights.tolist()
+        # return weights
 
 
     def predictRow(self, row):
         sum = 0
         for colNum in range(self.data.getColumns() - 1):
-            sum = sum + self.VeryBestWeights[colNum] * row[colNum]
+            sum = sum + self.weights[colNum] * row[colNum]
         value = round(sum)
         print("Sum: %f" % sum)
         print("Value: %i" % value)
@@ -130,12 +121,16 @@ def main():
     ]
     data = Data(info)
     ai.setData(data)
-    ai.learn(499)
+    ai.printWeights()
+    temp = input("Press [enter] to start learning: ")
+    ai.learn(999)
     ai.printWeights()
 
-    # row = [1, 0, 1, 0, 0]
-    # print("")
-    # ai.predictRow(row)
+    row = [1, 0, 1, 0]
+    print("\n\nTrying to predict the result if this was the data: ")
+    print(row)
+    print("\nPrediction: ")
+    ai.predictRow(row)
 
 main()
 
