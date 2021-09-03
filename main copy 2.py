@@ -29,7 +29,7 @@ class AI():
     def __init__(self):
         self.data = []
         self.weights = []
-        self.mse = 0
+        self.error = 1.0
 
     def learn(self, numberOfTests):
 
@@ -44,10 +44,11 @@ class AI():
 
         for cycle in range(numberOfTests):
             print("\n\nCycle: %i" % cycle)
-            totalDerivative = 0
+            # totalDerivative = 0
+            totalDif = 0.0
             for colNum in range(self.data.getColumns() - 1):
                 print(" %.2f" % weights[colNum])
-            for rowNum in range(self.data.getRows()):
+            for rowNum in range(1):#self.data.getRows()):
                 print("")
                 sum = 0.0
                 for colNum in range(self.data.getColumns() - 1):
@@ -56,24 +57,24 @@ class AI():
                     sum = math.sqrt(sum)
                 except:
                     sum = -(math.sqrt(-sum))
-                sum = self.sigmoid(sum)
                 dif = sum - self.data.getResultForRow(rowNum)
-                mse = dif ** 2
-                derivative = 2 * dif
-                totalDerivative = totalDerivative + derivative
+                totalDif = totalDif + dif
+
+
 
                 print("Sum: %.3f" % sum)
                 print("Target: %i" % self.data.getResultForRow(rowNum))
-                print("mse: %.3f" % mse)
-                print("Der: %.3f" % derivative)
+                print("Dif: %.3f" % dif)
 
-            avgDerivative = totalDerivative / self.data.getRows()
-            print("Avg Der: %.3f" % avgDerivative)
-            weights = self.updateWeights(weights, avgDerivative)
+            avgDif = totalDif / (self.data.getColumns() - 1)
+            for rowNum in range(self.data.getRows()):
+                    for colNum in range(self.data.getColumns() - 1):
+                        weights[colNum] = weights[colNum] - (avgDif * self.data.getValueAt(rowNum, colNum))
+
 
 
         self.weights = weights
-        self.mse = mse
+        # self.error = error
 
 
         print("\n\n\nlearning finished!")
@@ -108,7 +109,7 @@ class AI():
         return value
             
     def printWeights(self):
-        print("mse: %.3f with weights:" % self.mse)
+        print("error: %.3f with weights:" % self.error)
         for colNum in range(self.data.getColumns() - 1):
             print("%.2f" % self.weights[colNum]) 
     def setData(self, data):
@@ -130,7 +131,7 @@ def main():
     ]
     data = Data(info)
     ai.setData(data)
-    ai.learn(99)
+    ai.learn(999)
     ai.printWeights()
 
     # row = [1, 0, 1, 0, 0]
