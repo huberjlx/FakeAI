@@ -2,6 +2,7 @@ import random
 import math
 import numpy as np
 # https://realpython.com/python-ai-neural-network/
+#https://pub.towardsai.net/building-neural-networks-from-scratch-with-python-code-and-math-in-detail-i-536fae5d7bbf#478a
 
 class Data():
 
@@ -35,10 +36,6 @@ class AI():
 
         weights = self.weights
         dif = 1000
-
-        for colNum in range(self.data.getColumns() - 1):
-            weight = random.random()
-            weights.append(weight)
             # print(" %f" % weight, end="")
         print("")
 
@@ -48,7 +45,7 @@ class AI():
             totalDif = 0.0
             for colNum in range(self.data.getColumns() - 1):
                 print(" %.2f" % weights[colNum])
-            for rowNum in range(1):#self.data.getRows()):
+            for rowNum in range(self.data.getRows()):
                 print("")
                 sum = 0.0
                 for colNum in range(self.data.getColumns() - 1):
@@ -61,15 +58,14 @@ class AI():
                 totalDif = totalDif + dif
 
 
-
                 print("Sum: %.3f" % sum)
                 print("Target: %i" % self.data.getResultForRow(rowNum))
                 print("Dif: %.3f" % dif)
 
             avgDif = totalDif / (self.data.getColumns() - 1)
             for rowNum in range(self.data.getRows()):
-                    for colNum in range(self.data.getColumns() - 1):
-                        weights[colNum] = weights[colNum] - (avgDif * self.data.getValueAt(rowNum, colNum))
+                for colNum in range(self.data.getColumns() - 1):
+                    weights[colNum] = weights[colNum] - (avgDif * self.data.getValueAt(rowNum, colNum))
 
 
 
@@ -114,6 +110,9 @@ class AI():
             print("%.2f" % self.weights[colNum]) 
     def setData(self, data):
         self.data = data
+        for colNum in range(self.data.getColumns() - 1):
+            weight = random.random()
+            self.weights.append(weight)
     def getData(self):
         return self.data
 
@@ -131,7 +130,7 @@ def main():
     ]
     data = Data(info)
     ai.setData(data)
-    ai.learn(999)
+    ai.learn(499)
     ai.printWeights()
 
     # row = [1, 0, 1, 0, 0]
@@ -139,3 +138,11 @@ def main():
     # ai.predictRow(row)
 
 main()
+
+
+
+
+
+
+
+# mse = (1/2) * ((target - output) ** 2)
