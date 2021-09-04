@@ -32,6 +32,7 @@ class AI():
     def learn(self, numberOfTests):
 
         weights = self.weights
+        dif = 1000
         print("")
 
         for cycle in range(numberOfTests):
@@ -48,12 +49,17 @@ class AI():
                     sum = math.sqrt(sum)
                 except:
                     sum = -(math.sqrt(-sum))
+
                 dif = sum - self.data.getResultForRow(rowNum)
                 error = (1/2) * (dif **2)
                 totalError = totalError + error
 
                 for colNum in range(self.data.getColumns() - 1):
                     weights[colNum] = weights[colNum] - self.learningRate * (dif * self.data.getValueAt(rowNum, colNum))
+
+                # print("Sum: %.3f" % sum)
+                # print("Target: %i" % self.data.getResultForRow(rowNum))
+                # print("Dif: %.3f" % dif)
 
             avgError = totalError / (self.data.getColumns() - 1)
             print("\nAverage Error: %.3f" % avgError)
@@ -62,6 +68,24 @@ class AI():
         self.error = avgError
 
         print("\n\n\nLearning Finished!")
+
+    def sigmoid(self, x):
+        # print(1 / (1 + math.exp(-x)))
+        return 1 / (1 + math.exp(-x))
+
+    def updateWeights(self, weights, derivative):
+        sum = 0.0
+        for colNum in range(self.data.getColumns() - 1):
+            sum = sum + weights[colNum]
+        for colNum in range(self.data.getColumns() - 1):
+            weights[colNum] = weights[colNum] - (derivative * (weights[colNum]/sum))
+        return weights
+
+        # npWeights = np.array(weights)
+        # npWeights = npWeights - derivative
+        # weights = npWeights.tolist()
+        # return weights
+
 
     def predictRow(self, row):
         sum = 0
@@ -100,7 +124,7 @@ def main():
     ai.setData(data)
     ai.printWeights()
     temp = input("Press [enter] to start learning: ")
-    ai.learn(10)
+    ai.learn(999)
     ai.printWeights()
 
     row = [1, 0, 1, 0]
@@ -110,3 +134,11 @@ def main():
     ai.predictRow(row)
 
 main()
+
+
+
+
+
+
+
+# mse = (1/2) * ((target - output) ** 2)
