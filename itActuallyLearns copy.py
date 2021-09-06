@@ -16,9 +16,13 @@ class Data():
     def getColumns(self): # rows # how many on wide
         return len(self.info[0])
     def getValueAt(self, rowNum, colNum):
-        return self.info[rowNum][colNum]
+        return self.sigmoid(self.info[rowNum][colNum])
     def getResultForRow(self, rowNum):
-        return self.info[rowNum][len(self.info[rowNum]) - 1]
+        return self.sigmoid(self.info[rowNum][len(self.info[rowNum]) - 1])
+    
+    def sigmoid(self, x):
+        # print(1 / (1 + math.exp(-x)))
+        return 1 / (1 + math.exp(-x))
 
 
 class AI():
@@ -62,6 +66,7 @@ class AI():
         self.error = avgError
 
         print("\n\n\nLearning Finished!")
+
 
     def predictRow(self, row):
         sum = 0
