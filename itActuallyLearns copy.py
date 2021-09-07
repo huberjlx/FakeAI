@@ -31,7 +31,6 @@ class AI():
         self.learningRate = 0.05
         self.data = []
         self.weights = []
-        self.error = -1.0
 
     def learn(self, numberOfTests):
 
@@ -63,7 +62,6 @@ class AI():
             print("\nAverage Error: %.3f" % avgError)
 
         self.weights = weights
-        self.error = avgError
 
         print("\n\n\nLearning Finished!")
 
@@ -78,7 +76,7 @@ class AI():
         return value
             
     def printWeights(self):
-        print("error: %.3f with weights:" % self.error)
+        print("Weights:")
         for colNum in range(self.data.getColumns() - 1):
             print("%f" % self.weights[colNum]) 
     def setData(self, data):
@@ -105,7 +103,7 @@ def main():
     ai.setData(data)
     ai.printWeights()
     temp = input("Press [enter] to start learning: ")
-    ai.learn(999)
+    ai.learn(9999)
     ai.printWeights()
 
     row = [1, 0, 1, 0]
