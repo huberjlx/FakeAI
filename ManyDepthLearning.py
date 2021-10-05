@@ -42,32 +42,29 @@ class AI():
             print("\nCycle: %i" % cycle)
 
             for rowNum in range(self.data.getRows()):
-                print("\nCycle: %i" % cycle)
+                sum = 0.0
 
-                for rowNum in range(self.data.getRows()):
-                    sum = 0.0
+                for colNum in range(self.data.getColumns() - 1): # layer0 always have this many
+                    sum = sum + self.listOfWeights[0][colNum] * self.data.getValueAt(rowNum, colNum)
 
-                    for colNum in range(self.data.getColumns() - 1): # layer0 always have this many
-                        sum = sum + self.listOfWeights[0][colNum] * self.data.getValueAt(rowNum, colNum)
+                for layer in range(len(self.listOfWeights) - 1): # 3 
+                    layerSize = len(self.listOfWeights[layer]) # 2
+                    sums = [sum] * layerSize
+                    for layerWidthCount in range(layerSize):
+                        sums[layerWidthCount] = sums[layerWidthCount] * self.listOfWeights[layer][layerWidthCount]
+                    sum = sums[0] + sums[1]
+                    
+                try:
+                    sum = math.sqrt(sum)
+                except:
+                    sum = -(math.sqrt(-sum))
+                target = self.data.getResultForRow(rowNum) #* len(self.listOfWeights)
+                dif = sum - target
+                # error = (1/2) * (dif **2)
 
-                    for layer in range(len(self.listOfWeights) - 1): # 3 
-                        layerSize = len(self.listOfWeights[layer]) # 2
-                        sums = [sum] * layerSize
-                        for layerWidthCount in range(layerSize):
-                            sums[layerWidthCount] = sums[layerWidthCount] * self.listOfWeights[layer][layerWidthCount]
-                        sum = sums[0] + sums[1]
-                        
-                    try:
-                        sum = math.sqrt(sum)
-                    except:
-                        sum = -(math.sqrt(-sum))
-                    target = self.data.getResultForRow(rowNum) #* len(self.listOfWeights)
-                    dif = sum - target
-                    # error = (1/2) * (dif **2)
-
-                    for layer in range(len(self.listOfWeights)):
-                        for weightIdx in range(len(self.listOfWeights[layer])):
-                            self.listOfWeights[layer][weightIdx] = self.listOfWeights[layer][weightIdx] - self.learningRate * (dif * self.data.getValueAt(rowNum, colNum))
+                for layer in range(len(self.listOfWeights)):
+                    for weightIdx in range(len(self.listOfWeights[layer])):
+                        self.listOfWeights[layer][weightIdx] = self.listOfWeights[layer][weightIdx] - self.learningRate * (dif * self.data.getValueAt(rowNum, colNum))
 
 
 
