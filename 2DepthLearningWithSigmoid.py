@@ -16,9 +16,13 @@ class Data():
     def getColumns(self): # rows # how many on wide
         return len(self.info[0])
     def getValueAt(self, rowNum, colNum):
-        return self.info[rowNum][colNum]
+        return self.sigmoid(self.info[rowNum][colNum])
     def getResultForRow(self, rowNum):
-        return self.info[rowNum][len(self.info[rowNum]) - 1]
+        return self.sigmoid(self.info[rowNum][len(self.info[rowNum]) - 1])
+
+    def sigmoid(self, x):
+        # print(1 / (1 + math.exp(-x)))
+        return 1 / (1 + math.exp(-x))
 
 
 class AI():
@@ -77,10 +81,6 @@ class AI():
         print("Sum: %f" % grandSum)
         print("Value: %i" % value)
         return value
-
-    def sigmoid(self, x):
-        print(1 / (1 + math.exp(-x)))
-        return 1 / (1 + math.exp(-x))
             
     def printWeights(self):
         print("layer1: ", end="")
