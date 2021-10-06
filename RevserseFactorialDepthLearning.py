@@ -20,6 +20,9 @@ class Data():
         return self.info[rowNum][len(self.info[rowNum]) - 1]
 
 
+def swish(x):
+    return x  * ((1 + math.exp(-1)) ** -1)
+
 class AI():
 
     def __init__(self):
@@ -33,34 +36,32 @@ class AI():
         for cycle in range(numberOfTests):
             print("\nCycle: %i" % cycle)
 
-            # for rowNum in range(self.data.getRows()):
-            #     sum = 0.0
-
-            #     for colNum in range(self.data.getColumns() - 1): # layer0 always have this many
-            #         sum = sum + self.listOfWeights[0][colNum] * self.data.getValueAt(rowNum, colNum)
-
-            #     for layer in range(len(self.listOfWeights) - 1): # 3 
-            #         layerSize = len(self.listOfWeights[layer]) # 2
-            #         sums = [sum] * layerSize
-            #         for layerWidthCount in range(layerSize):
-            #             sums[layerWidthCount] = sums[layerWidthCount] * self.listOfWeights[layer][layerWidthCount]
-            #         sum = sums[0] + sums[1]
-                    
-            #     try:
-            #         sum = math.sqrt(sum)
-            #     except:
-            #         sum = -(math.sqrt(-sum))
-            #     target = self.data.getResultForRow(rowNum) #* len(self.listOfWeights)
-            #     dif = sum - target
-            #     # error = (1/2) * (dif **2)
-
-            #     for layer in range(len(self.listOfWeights)):
-            #         for weightIdx in range(len(self.listOfWeights[layer])):
-            #             self.listOfWeights[layer][weightIdx] = self.listOfWeights[layer][weightIdx] - self.learningRate * (dif * self.data.getValueAt(rowNum, colNum))
             for rowNum in range(self.data.getRows()):
                 sum = 0.0
+                inputs = []
                 for colNum in range(self.data.getColumns() - 1):
-                    print("yos")
+                    inputs.append(self.data.getValueAt(rowNum, colNum))
+
+                for layer in range(len(self.listOfWeights)): # 3
+                    sums = [0] * len(self.listOfWeights[layer]) # 3
+                    for point in range(len(self.listOfWeights[layer])):
+                        for weight in range(len(self.listOfWeights[layer][point])):
+                            sums[point] = sums[point] + self.listOfWeights[layer][point][weight] * inputs[weight]
+                            # print(sums)
+                    inputs = sums
+                    for idx in range(len(inputs)):
+                        inputs[idx] = swish(inputs[idx])
+
+                sum = sums[0]
+                # this doesnt work (rest of function from here down)
+                # sum = swish(sum)
+                dif = sum - self.data.getResultForRow(rowNum)
+                print("Dif: %4f  :  %4f" % (dif, dif * self.learningRate))
+                for layer in range(len(self.listOfWeights)):
+                    for point in range(len(self.listOfWeights[layer])):
+                        for weight in range(len(self.listOfWeights[layer][point])):
+                            self.listOfWeights[layer][point][weight] = self.listOfWeights[layer][point][weight] - self.learningRate * dif
+                            
 
 
             self.printWeights()
@@ -68,16 +69,20 @@ class AI():
 
     def predictRow(self, row):
         sum = 0.0
-
+        inputs = []
         for colNum in range(self.data.getColumns() - 1):
-            sum = sum + self.listOfWeights[0][colNum]
+            inputs.append(row[colNum])
 
-        for layer in range(len(self.listOfWeights) - 1): # 3 
-            layerSize = len(self.listOfWeights[layer]) # 2
-            sums = [sum] * layerSize
-            for layerWidthCount in range(layerSize):
-                sums[layerWidthCount] = sums[layerWidthCount] * self.listOfWeights[layer][layerWidthCount]
-            sum = sums[0] + sums[1]
+        for layer in range(len(self.listOfWeights)): # 3
+            sums = [0] * len(self.listOfWeights[layer]) # 3
+            for point in range(len(self.listOfWeights[layer])):
+                for weight in range(len(self.listOfWeights[layer][point])):
+                    sums[point] = sums[point] + self.listOfWeights[layer][point][weight] * inputs[weight]
+                    # print(sums)
+            inputs = sums
+
+
+        sum = sums[0]
         
         value = round(sum)
         print("Sum: %f" % sum)
@@ -98,7 +103,6 @@ class AI():
         self.listOfWeights = []
 
         count = self.data.getColumns() - 1
-        idx = 0
         while count > 1:
             layer = []
             for i in range(count - 1):
@@ -106,15 +110,8 @@ class AI():
                 for j in range(count):
                     temp.append(random.random())
                 layer.append(temp)
-            # [
-            #   [0, 0, 0, 0],
-            #   [0, 0, 0, 0],
-            #   [0, 0, 0, 0]
-            # ]
             self.listOfWeights.append(layer)
-            idx += 1
             count = count - 1
-            print(layer)
 
     def getData(self):
         return self.data
@@ -130,19 +127,20 @@ def main():
         [1, 1, 0, 0, 1],
         [0, 1, 0, 1, 0],
         [0, 0, 1, 1, 0]
+        # [1, 0, 1, 0, 0]
     ]
     data = Data(info)
     ai.setData(data)
     ai.printWeights()
     temp = input("Press [enter] to start learning: ")
-    ai.learn(9999)
+    ai.learn(999)
     print("\n\nFinal Weights")
     ai.printWeights()
 
-    # row = [1, 0, 1, 0] # should be 1
-    # print("\n\nTrying to predict the result if this was the data: ")
-    # print(row)
-    # print("\nPrediction: ")
-    # ai.predictRow(row)
+    row = [1, 0, 1, 0] # should be 1
+    print("\n\nTrying to predict the result if this was the data: ")
+    print(row)
+    print("\nPrediction: ")
+    ai.predictRow(row)
 
 main()
