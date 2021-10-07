@@ -127,9 +127,9 @@ def main():
 
     l0 = Layer(4, 6, 0)
     l1 = Layer(6, 7, 1)
-    l2 = Layer(7, 3, 2)
-    l3 = Layer(3, 1, 0)
-    layers = [l0, l1, l2, l3]
+    l2 = Layer(7, 1, 2)
+    # l3 = Layer(3, 1, 0)
+    layers = [l0, l1, l2]#, l3]
     ai = AI(layers)
     info = [
         [1, 0, 1, 1, 1],
