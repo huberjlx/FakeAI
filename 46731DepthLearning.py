@@ -20,7 +20,8 @@ class Data():
         return self.info[rowNum][len(self.info[rowNum]) - 1]
 
 def swish(x):
-    return x  * ((1 + math.exp(-1)) ** -1)
+    # return x  * ((1 + math.exp(-1)) ** -1)
+    return 1 / (1 + math.exp(-x))
 
 class Layer():
 
@@ -40,7 +41,7 @@ class Layer():
         sums = []
         for outPoint in range(self.outPoints):
             sum = 0
-            for point in range(len(inputs)): # len(inputs) should be euqal to inPoints
+            for point in range(len(inputs)):
                 sum = sum + self.weights[outPoint][point] * inputs[point]
             sum = swish(sum) # ACTIVATE
             sums.append(sum)
@@ -67,10 +68,9 @@ class Layer():
 class AI():
 
     def __init__(self, layers):
-        self.learningRate = 0.001
+        self.learningRate = 0.05
         self.data = []
         self.layers = layers
-
 
     def learn(self, numberOfTests):
 
@@ -130,6 +130,7 @@ def main():
     l2 = Layer(7, 1, 2)
     # l3 = Layer(3, 1, 0)
     layers = [l0, l1, l2]#, l3]
+    # layers = [Layer(4, 1, 0)]
     ai = AI(layers)
     info = [
         [1, 0, 1, 1, 1],
@@ -148,9 +149,11 @@ def main():
     ai.printWeights()
 
     row = [1, 0, 1, 0] # should be 1
+    row2 = [0, 0, 1, 1]
     print("\n\nTrying to predict the result if this was the data: ")
     print(row)
     print("\nPrediction: ")
     ai.predictRow(row)
+    ai.predictRow(row2)
 
 main()
