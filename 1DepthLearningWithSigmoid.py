@@ -14,12 +14,20 @@ class Data():
         return len(self.info)
     def getColumns(self): # rows # how many on wide
         return len(self.info[0])
-    def getValueAt(self, rowNum, colNum):
-        return self.sigmoid(self.info[rowNum][colNum])
-    def getResultForRow(self, rowNum):
-        return self.sigmoid(self.info[rowNum][len(self.info[rowNum]) - 1])
+    # def getValueAt(self, rowNum, colNum):
+    #     return self.sigmoid(self.info[rowNum][colNum])
+    # def getResultForRow(self, rowNum):
+    #     return self.sigmoid(self.info[rowNum][len(self.info[rowNum]) - 1])
     
-    def sigmoid(self, x):
+    # def sigmoid(self, x):
+    #     # print(1 / (1 + math.exp(-x)))
+    #     return 1 / (1 + math.exp(-x))
+    def getValueAt(self, rowNum, colNum):
+        return self.info[rowNum][colNum]
+    def getResultForRow(self, rowNum):
+        return self.info[rowNum][len(self.info[rowNum]) - 1]
+
+def sigmoid(x):
         # print(1 / (1 + math.exp(-x)))
         return 1 / (1 + math.exp(-x))
 
@@ -49,6 +57,8 @@ class AI():
                     sum = math.sqrt(sum)
                 except:
                     sum = -(math.sqrt(-sum))
+
+                sum = sigmoid(sum)
                 dif = sum - self.data.getResultForRow(rowNum)
                 # error = (1/2) * (dif **2)
 
@@ -63,6 +73,7 @@ class AI():
         sum = 0
         for colNum in range(self.data.getColumns() - 1):
             sum = sum + self.weights[colNum] * row[colNum]
+        sum = sigmoid(sum)
         value = round(sum)
         print("Sum: %f" % sum)
         print("Value: %i" % value)
