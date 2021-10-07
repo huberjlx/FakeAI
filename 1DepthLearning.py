@@ -46,13 +46,12 @@ class AI():
                 except:
                     sum = -(math.sqrt(-sum))
                 dif = sum - self.data.getResultForRow(rowNum)
-                # error = (1/2) * (dif **2)
+                # error = (1/2) * (dif ** 2)
 
                 for colNum in range(self.data.getColumns() - 1):
                     weights[colNum] = weights[colNum] - self.learningRate * (dif * self.data.getValueAt(rowNum, colNum))
 
         self.weights = weights
-        print("\n\n\nLearning Finished!")
 
 
     def predictRow(self, row):
@@ -92,7 +91,7 @@ def main():
     ai.setData(data)
     ai.printWeights()
     temp = input("Press [enter] to start learning: ")
-    ai.learn(9999)
+    ai.learn(99)
     ai.printWeights()
 
     row = [1, 0, 1, 0]
