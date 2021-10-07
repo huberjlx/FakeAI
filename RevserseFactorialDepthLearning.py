@@ -60,7 +60,7 @@ class AI():
                 for layer in range(len(self.listOfWeights)):
                     for point in range(len(self.listOfWeights[layer])):
                         for weight in range(len(self.listOfWeights[layer][point])):
-                            self.listOfWeights[layer][point][weight] = self.listOfWeights[layer][point][weight] - self.learningRate * dif
+                            self.listOfWeights[layer][point][weight] = self.listOfWeights[layer][point][weight] - self.learningRate * (dif * self.data.getValueAt(rowNum, colNum))
                             
 
 
@@ -133,7 +133,7 @@ def main():
     ai.setData(data)
     ai.printWeights()
     temp = input("Press [enter] to start learning: ")
-    ai.learn(999)
+    ai.learn(99)
     print("\n\nFinal Weights")
     ai.printWeights()
 
