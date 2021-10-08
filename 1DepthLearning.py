@@ -37,7 +37,6 @@ class AI():
             for colNum in range(self.data.getColumns() - 1):
                 print(" %f" % weights[colNum])
             for rowNum in range(self.data.getRows()):
-                # print("")
                 sum = 0.0
                 for colNum in range(self.data.getColumns() - 1):
                     sum = sum + weights[colNum] * self.data.getValueAt(rowNum, colNum)
