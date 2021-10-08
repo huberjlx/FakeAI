@@ -50,6 +50,8 @@ class AI():
 
                 for colNum in range(self.data.getColumns() - 1):
                     weights[colNum] = weights[colNum] - self.learningRate * (dif * self.data.getValueAt(rowNum, colNum))
+                print("DIF: %f" % dif)
+                print("Update by: %.5f" % (self.learningRate * (dif * self.data.getValueAt(rowNum, colNum))))
 
         self.weights = weights
 
@@ -91,7 +93,7 @@ def main():
     ai.setData(data)
     ai.printWeights()
     temp = input("Press [enter] to start learning: ")
-    ai.learn(99)
+    ai.learn(9)
     ai.printWeights()
 
     row = [1, 0, 1, 0]
