@@ -43,14 +43,16 @@ class Layer():
             sum = 0
             for point in range(len(inputs)):
                 sum = sum + self.weights[outPoint][point] * inputs[point]
-            sum = swish(sum) # ACTIVATE
+            # sum = swish(sum) # ACTIVATE
             sums.append(sum)
         return sums
 
     def updateWeights(self, learningRate, dif, target):
         for points in range(self.outPoints):
             for weight in range(self.inPoints):
-                self.weights[points][weight] = self.weights[points][weight] - learningRate * (dif * target)
+                updateVal = learningRate * (dif * target)
+                self.weights[points][weight] = self.weights[points][weight] - updateVal
+            print("Update by: %.5f" % (-updateVal))
 
     def printWeights(self):
         title = "layer%i  :  (%i in, %i out)\n" % (self.layerNum, self.inPoints, self.outPoints)
@@ -93,6 +95,8 @@ class AI():
 
                 dif = sum - self.data.getResultForRow(rowNum)
                 print("DIF: %f" % dif)
+                if dif > 0.5:
+                    print("LARGE ISSUE !!!!!!!!!!!!!")
                 for layer in self.layers:
                     layer.updateWeights(self.learningRate, dif, self.data.getResultForRow(rowNum))
 
@@ -125,12 +129,12 @@ class AI():
 
 def main():
 
-    l0 = Layer(4, 6, 0)
-    l1 = Layer(6, 7, 1)
-    l2 = Layer(7, 1, 2)
+    # l0 = Layer(4, 6, 0)
+    # l1 = Layer(6, 7, 1)
+    # l2 = Layer(7, 1, 2)
     # l3 = Layer(3, 1, 0)
-    layers = [l0, l1, l2]#, l3]
-    # layers = [Layer(4, 1, 0)]
+    # layers = [l0, l1, l2]#, l3]
+    layers = [Layer(4, 1, 0)]
     ai = AI(layers)
     info = [
         [1, 0, 1, 1, 1],
@@ -144,7 +148,7 @@ def main():
     ai.setData(data)
     ai.printWeights()
     temp = input("Press [enter] to start learning: ")
-    ai.learn(999)
+    ai.learn(9)
     print("\n\nFinal Weights")
     ai.printWeights()
 
@@ -154,6 +158,9 @@ def main():
     print(row)
     print("\nPrediction: ")
     ai.predictRow(row)
+    print("Should be 1")
     ai.predictRow(row2)
+    print("Should be 0")
 
+    
 main()
