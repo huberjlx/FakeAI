@@ -1,6 +1,8 @@
 import random
 import math
 
+# CALMING SHARK LOOK AT THIS
+
 class Data():
 
     def __init__(self, info):
