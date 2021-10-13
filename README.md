@@ -10,7 +10,7 @@ Current TODO:
   - Add a more advance error calculation/update weights system
   - Verify that it works on the basic 1s and 0s dataset
   - Get stock data from past years:
-  -   - Pre-covid and during covid
+    - Pre-covid and during covid
   - Verify that the model works on that stock data
   - Tweak it to make it best as possible
   - MAKE MONEY!!
