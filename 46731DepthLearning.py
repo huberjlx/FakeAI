@@ -149,7 +149,7 @@ def main():
     ai.setData(data)
     ai.printWeights()
     temp = input("Press [enter] to start learning: ")
-    ai.learn(9)
+    ai.learn(999)
     print("\n\nFinal Weights")
     ai.printWeights()
 

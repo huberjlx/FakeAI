@@ -14,14 +14,6 @@ class Data():
         return len(self.info)
     def getColumns(self): # rows # how many on wide
         return len(self.info[0])
-    # def getValueAt(self, rowNum, colNum):
-    #     return self.sigmoid(self.info[rowNum][colNum])
-    # def getResultForRow(self, rowNum):
-    #     return self.sigmoid(self.info[rowNum][len(self.info[rowNum]) - 1])
-    
-    # def sigmoid(self, x):
-    #     # print(1 / (1 + math.exp(-x)))
-    #     return 1 / (1 + math.exp(-x))
     def getValueAt(self, rowNum, colNum):
         return self.info[rowNum][colNum]
     def getResultForRow(self, rowNum):
@@ -107,7 +99,7 @@ def main():
     ai.setData(data)
     ai.printWeights()
     temp = input("Press [enter] to start learning: ")
-    ai.learn(9999)
+    ai.learn(999)
     ai.printWeights()
 
     row = [1, 0, 1, 0]
