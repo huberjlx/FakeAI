@@ -14,7 +14,7 @@ AI Code:
   - MAKE MONEY!!
 
 Webscraper:
-    - Find a good website to scrape from
-    - Don't do it illegally
-    - API? FREE?
-        - FREE = more money later and less cost if it all fails
+  - Find a good website to scrape from
+  - Don't do it illegally
+  - API? FREE?
+    - FREE = more money later and less cost if it all fails
