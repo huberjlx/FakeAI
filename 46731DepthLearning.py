@@ -65,13 +65,13 @@ class Layer():
         finalString = title + weightsString
         print(finalString)
         return finalString
-            
+
 
 
 class AI():
 
     def __init__(self, layers):
-        self.learningRate = 0.05
+        self.learningRate = 1.5
         self.data = []
         self.layers = layers
 
@@ -81,8 +81,10 @@ class AI():
             print("\nCycle: %i" % cycle)
 
             for rowNum in range(self.data.getRows()):
+                print(rowNum)
                 inputs = []
                 for colNum in range(self.data.getColumns() - 1):
+                    print(colNum)
                     inputs.append(self.data.getValueAt(rowNum, colNum))
                 for layer in self.layers:
                     inputs = layer.calcLayer(inputs)
@@ -102,7 +104,7 @@ class AI():
                     layer.updateWeights(self.learningRate, dif, self.data.getResultForRow(rowNum))
 
             self.printWeights()
-                
+
 
     def predictRow(self, row):
         inputs = []
@@ -111,12 +113,12 @@ class AI():
         for layer in self.layers:
             inputs = layer.calcLayer(inputs)
         sum = inputs[0]
-        
+
         value = round(sum)
         print("Sum: %f" % sum)
         print("Value: %i" % value)
         return value
-            
+
     def printWeights(self):
         for layer in self.layers:
             layer.printWeights()
@@ -149,7 +151,7 @@ def main():
     ai.setData(data)
     ai.printWeights()
     temp = input("Press [enter] to start learning: ")
-    ai.learn(999)
+    ai.learn(9)
     print("\n\nFinal Weights")
     ai.printWeights()
 
@@ -163,5 +165,5 @@ def main():
     ai.predictRow(row2)
     print("Should be 0")
 
-    
+
 main()
